@@ -1,23 +1,28 @@
 //Create default board
-
 let board = document.querySelector('.board');
-
-board.style.gridTemplateColumns = "repeat(16, 1fr)";
-board.style.gridTemplateRows = "repeat(16, 1fr)";
 
 function turnBlack(event) {
     if (event.buttons === 1)
         event.target.style.backgroundColor = 'black';
 }
 
-for (let i = 0; i < 16; i++)
-    for (let j = 0; j < 16; j++) {
+function createBoard(size) {
+    board.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+    board.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+    for (let i = 0; i < size * size; i++) {
         let pixel = document.createElement('div');
-
+    
         pixel.addEventListener('mouseenter', turnBlack);
-
+    
         board.insertAdjacentElement('beforeend', pixel);
     }
+}
+
+createBoard(16);
+
+
+
 
 
 //Make the coloring black when clicking black button
@@ -112,3 +117,23 @@ function clearBoard() {
 
 const clearButton = document.querySelector('.clear-button');
 clearButton.addEventListener('click', clearBoard)
+
+
+//Get input for board size and change the board
+
+const inputButton = document.querySelector(".input-button");
+
+function getInputNum(){
+    let size = document.getElementById("size-input");
+    return size.value;
+}
+
+inputButton.addEventListener("click", function() {
+    let newSize = getInputNum();
+    if (newSize >= 2 && newSize <= 100) {
+        createBoard(newSize);
+        clearBoard();
+    }
+    else
+        alert("Board size should be between 2 ~ 100!");
+});
